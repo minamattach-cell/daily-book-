@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>하루한책 (Daily Book) - Multilingual Audio Wisdom (KO • EN • ZH • MN • JA)</title>
+  <style>
+    :root {
+      --bg-color: #F8F9FA;
+      --card-bg: #FFFFFF;
+      --primary: #1A365D;
+      --primary-light: #2B6CB0;
+      --accent: #C05621;
+      --accent-light: #FEEBC8;
+      --tag-public: #276749;
+      --tag-public-bg: #C6F6D5;
+      --text-main: #2D3748;
+      --text-muted: #718096;
+      --border: #E2E8F0;
+      --font-base: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", "Noto Sans SC", "Noto Sans JP", "Arial", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.75;
+      font-size: var(--font-base);
+      transition: font-size 0.2s ease;
+    }
+
+    header {
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 12px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .nav-container {
+      max-width: 880px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .logo-badge {
+      background-color: var(--tag-public);
+      color: white;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Multilingual Switcher */
+    .lang-selector-box {
+      display: flex;
+      align-items: center;
+      background: #EDF2F7;
+      border-radius: 10px;
+      padding: 3px 4px;
+      border: 1px solid #CBD5E0;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      padding: 4px 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #4A5568;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+
+    .lang-btn:hover {
+      color: var(--primary);
+    }
+
+    .lang-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+    }
+
+    .streak-badge {
+      background-color: var(--accent-light);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-icon {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 5px 9px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      background: #EDF2F7;
+      color: var(--primary);
+      border-color: var(--primary-light);
+    }
+
+    main {
+      max-width: 880px;
+      margin: 16px auto 80px;
+      padding: 0 16px;
+    }
+
+    /* Date Controller Bar */
+    .date-nav-bar {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .date-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-date-nav {
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--primary);
+      font-weight: bold;
+      transition: all 0.15s;
+    }
+
+    .btn-date-nav:hover:not(:disabled) {
+      background: #E2E8F0;
+    }
+
+    .btn-date-nav:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .date-display-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 8px;
+      transition: background 0.15s;
+    }
+
+    .date-display-badge:hover {
+      background: #F1F5F9;
+    }
+
+    .date-text-main {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .date-status-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .date-status-tag.today {
+      background: #EBF8FF;
+      color: #2B6CB0;
+    }
+
+    .date-status-tag.past {
+      background: #FEEBC8;
+      color: #C05621;
+    }
+
+    .btn-today-return {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Category Selection Box */
+    .category-container {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #EDF2F7;
+    }
+
+    .category-header-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .category-header-hint {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .category-chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-top: 14px;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .chip {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      border-color: var(--primary-light);
+      background: #EDF2F7;
+      color: var(--primary);
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 10px rgba(26, 54, 93, 0.2);
+    }
+
+    .category-items-panel {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cat-item-btn {
+      background: white;
+      border: 1px solid #CBD5E0;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      color: #4A5568;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .cat-item-btn:hover, .cat-item-btn.selected {
+      background: #EBF8FF;
+      border-color: #3182CE;
+      color: #2B6CB0;
+      font-weight: 600;
+    }
+
+    /* Hero Content Card */
+    .book-hero {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 26px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .book-hero-header {
+        display: flex;
+        gap: 26px;
+        align-items: center;
+      }
+    }
+
+    .book-cover {
+      width: 145px;
+      height: 200px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+      margin: 0 auto;
+      transition: background 0.3s ease;
+    }
+
+    .book-cover h4 {
+      font-size: 1.12rem;
+      margin-bottom: 8px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .book-cover span {
+      font-size: 0.78rem;
+      opacity: 0.85;
+    }
+
+    .book-info {
+      flex: 1;
+    }
+
+    .tag-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .book-category {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    .public-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--tag-public);
+      background: var(--tag-public-bg);
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    .book-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .book-author {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .book-one-liner {
+      font-size: 1.02rem;
+      color: var(--text-main);
+      background: #F7FAFC;
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+
+    /* 3-Minute Voice Audio Player */
+    .audio-player-card {
+      background: #1A202C;
+      color: white;
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 6px 16px rgba(26, 32, 44, 0.25);
+    }
+
+    .player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      opacity: 0.95;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-play {
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.35rem;
+      font-weight: bold;
+      transition: transform 0.1s, background-color 0.2s;
+    }
+
+    .btn-play:hover {
+      background-color: #9C4221;
+      transform: scale(1.05);
+    }
+
+    .player-track-info {
+      flex: 1;
+    }
+
+    .player-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-3min {
+      background: #E53E3E;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .player-status {
+      font-size: 0.85rem;
+      color: #CBD5E0;
+      margin-top: 4px;
+    }
+
+    .speed-selector {
+      background: #2D3748;
+      color: white;
+      border: 1px solid #4A5568;
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    /* Script Viewer Box */
+    .script-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .script-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #EDF2F7;
+    }
+
+    .script-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .script-body {
+      background: #FAF5FF;
+      border-radius: 12px;
+      padding: 22px;
+      border: 1px solid #E9D8FD;
+      font-size: 1.02rem;
+      line-height: 1.95;
+      color: #2D3748;
+      white-space: pre-line;
+    }
+
+    /* Action Footer */
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      padding: 18px 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .btn-complete {
+      background: #2E8540;
+      color: white;
+      border: none;
+      padding: 11px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-complete.done {
+      background: #718096;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      max-width: 580px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #718096;
+    }
+
+    .date-archive-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .date-archive-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #E2E8F0;
+      background: #F8FAFC;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .date-archive-item:hover, .date-archive-item.active {
+      border-color: var(--primary-light);
+      background: #EFF6FF;
+      transform: translateX(3px);
+    }
+
+    .archive-left {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .archive-date-str {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #64748B;
+    }
+
+    .archive-item-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .archive-item-cat {
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .archive-status-badge {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .archive-status-badge.completed {
+      background: #DEF7EC;
+      color: #03543F;
+    }
+
+    .archive-status-badge.pending {
+      background: #F1F5F9;
+      color: #64748B;
+    }
+
+    .scrapped-card {
+      background: #F8FAFC;
+      border-left: 3px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 12px;
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <div class="nav-container">
+      <div class="logo" id="logoClick" title="Home">
+        🏛️ <span id="uiLogoText">하루한책</span>
+        <span class="logo-badge" id="uiLogoBadge">3분 음성 지혜</span>
+      </div>
+      <div class="header-actions">
+        <!-- Multilingual Switcher: KO, EN, ZH, MN, JA -->
+        <div class="lang-selector-box">
+          <button class="lang-btn active" data-lang="KO">KO 한국어</button>
+          <button class="lang-btn" data-lang="EN">EN English</button>
+          <button class="lang-btn" data-lang="ZH">ZH 中文</button>
+          <button class="lang-btn" data-lang="MN">MN Монгол</button>
+          <button class="lang-btn" data-lang="JA">JA 日本語</button>
+        </div>
+
+        <button class="btn-icon" id="openDateArchiveBtn" title="Date Archive">
+          📅 <span id="uiDateArchiveBtn">날짜 보관함</span>
+        </button>
+        <div class="streak-badge" id="streakBadge">
+          🔥 3일 연속 완독
+        </div>
+        <button class="btn-icon" id="fontToggleBtn" title="Font Size">
+          가A
+        </button>
+        <button class="btn-icon" id="scrapOpenBtn" title="Saved Quotes">
+          ⭐ <span id="uiScrapBtn">보관함</span> (<span id="scrapCount">0</span>)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main App Content -->
+  <main>
+    <!-- Date Navigation Controller Bar -->
+    <div class="date-nav-bar">
+      <div class="date-nav-left">
+        <button class="btn-date-nav" id="prevDayBtn" title="Previous Day">◀</button>
+        <div class="date-display-badge" id="datePickerTrigger" title="Open Calendar">
+          <span class="date-text-main" id="currentDateStr">2026년 10월 13일</span>
+          <span class="date-status-tag today" id="dateStatusTag">오늘의 지혜</span>
+          <span style="font-size:0.75rem; color:#64748B;">▾</span>
+        </div>
+        <button class="btn-date-nav" id="nextDayBtn" title="Next Day">▶</button>
+      </div>
+      <div class="date-nav-right">
+        <button class="btn-today-return" id="todayReturnBtn" style="display:none;">
+          🌟 오늘로 돌아가기
+        </button>
+      </div>
+    </div>
+
+    <!-- Category Selector Box -->
+    <div class="category-container">
+      <div class="category-header" id="categoryHeaderToggle">
+        <div class="category-header-title">
+          <span>📂 <span id="uiCatHeaderTitle">카테고리별 지혜 선택</span></span>
+          <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);" id="currentCategoryText">(전체)</span>
+        </div>
+        <div class="category-header-hint" id="uiCatHeaderHint">원하는 카테고리를 터치하면 즉시 열립니다 ▾</div>
+      </div>
+
+      <!-- Main Category Chips -->
+      <div class="category-chips" id="categoryChips">
+        <button class="chip active" data-category="ALL">✨ <span id="cat_all">전체 보기</span></button>
+        <button class="chip" data-category="CLASSIC">📖 <span id="cat_classic">고전 도서</span></button>
+        <button class="chip" data-category="QUOTE">💡 <span id="cat_quote">인생 명언</span></button>
+        <button class="chip" data-category="PROVERB">🌾 <span id="cat_proverb">동서양 속담</span></button>
+        <button class="chip" data-category="BIBLE">🕊️ <span id="cat_bible">성경 지혜</span></button>
+        <button class="chip" data-category="EASTERN">🍵 <span id="cat_eastern">동양 철학</span></button>
+      </div>
+
+      <!-- Sub-items in Active Category -->
+      <div class="category-items-panel" id="categorySubItems">
+        <!-- Sub item buttons generated dynamically -->
+      </div>
+    </div>
+
+    <!-- Hero Content Card -->
+    <div class="book-hero" id="heroCard">
+      <div class="book-hero-header">
+        <div class="book-cover" id="bookCover">
+          <h4 id="coverTitle">명상록</h4>
+          <span id="coverAuthor">아우렐리우스</span>
+        </div>
+        <div class="book-info">
+          <div class="tag-group">
+            <span class="book-category" id="bookCategory">고전 도서 • 철학</span>
+            <span class="public-tag" id="publicTag">공개 고전 (Public Domain)</span>
+          </div>
+          <h1 class="book-title" id="bookTitle">명상록 (Meditations)</h1>
+          <div class="book-author" id="bookAuthor">마르쿠스 아우렐리우스</div>
+          <div class="book-one-liner" id="bookQuote">
+            "아침에 일어날 때 생각하라..."
+          </div>
+        </div>
+      </div>
+
+      <!-- 3-Minute Voice Audio Player -->
+      <div class="audio-player-card">
+        <div class="player-header">
+          <span>🎙️ <span id="uiPlayerTitle">3분 오디오 대독 플레이어</span></span>
+          <select class="speed-selector" id="speedSelect">
+            <option value="1.0">1.0x</option>
+            <option value="1.2">1.2x</option>
+            <option value="1.5">1.5x</option>
+          </select>
+        </div>
+        <div class="player-controls">
+          <button class="btn-play" id="playBtn" title="Play / Pause">▶</button>
+          <div class="player-track-info">
+            <div class="player-title">
+              <span id="playerBookTitle">명상록 - 3분 음성 대독</span>
+              <span class="badge-3min" id="uiBadge3min">약 3분 낭독</span>
+            </div>
+            <div class="player-status" id="playerStatus">재생 버튼(▶)을 누르면 음성 낭독이 시작됩니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-Minute Narration Script Display -->
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-title">📜 <span id="uiScriptViewerTitle">3분 대독 낭독문 전문 (듣기 & 따라 읽기)</span></div>
+        <button class="btn-icon" id="scrapThisQuoteBtn">⭐ <span id="uiScrapThisBtn">명문장 스크랩</span></button>
+      </div>
+
+      <div class="script-body" id="scriptBody">
+        <!-- Script inserted dynamically -->
+      </div>
+    </div>
+
+    <!-- Complete Action Bar -->
+    <div class="action-bar">
+      <div>
+        <strong id="completeMissionTitle">오늘의 3분 지혜 리추얼</strong>
+        <div style="font-size: 0.85rem; color: var(--text-muted);" id="completeMissionDesc">
+          3분 오디오를 모두 들으셨다면 완료를 눌러 해당 날짜의 완독을 보관하세요.
+        </div>
+      </div>
+      <button class="btn-complete" id="completeBtn">
+        ✓ 이 날짜 완독 완료 (+1일)
+      </button>
+    </div>
+  </main>
+
+  <!-- Date Archive Drawer Modal -->
+  <div class="modal-overlay" id="dateArchiveModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="uiModalDateArchiveTitle">📅 지난 날짜 & 오늘 날짜 지혜 보관함</h3>
+        <button class="btn-close" id="dateArchiveCloseBtn">&times;</button>
+      </div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px;" id="uiModalDateArchiveDesc">
+        지난 날짜의 지혜를 선택하면 그날의 엄선 고전과 3분 낭독을 다시 듣고 보관할 수 있습니다.
+      </p>
+      
+      <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px; background: #F1F5F9; padding: 10px 14px; border-radius: 10px;">
+        <span style="font-size: 0.85rem; font-weight: bold; color: var(--primary);" id="uiDirectDateLabel">특정 날짜 바로가기:</span>
+        <input type="date" id="directDateInput" style="padding: 5px 8px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.88rem;">
+      </div>
+
+      <div class="date-archive-list" id="dateArchiveList">
+        <!-- Generated Dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scrap Modal -->
+  <div class="modal-overlay" id="scrapModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="uiModalScrapTitle">⭐ 나의 스크랩 문장 보관함</h3>
+        <button class="btn-close" id="scrapCloseBtn">&times;</button>
+      </div>
+      <div id="scrappedItemsContainer">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">아직 보관된 문장이 없습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Multilingual Translations (KO, EN, ZH, MN, JA)
+    const i18nDict = {
+      KO: {
+        logoText: "하루한책",
+        logoBadge: "3분 음성 지혜",
+        dateArchiveBtn: "날짜 보관함",
+        scrapBtn: "보관함",
+        streakUnit: "일 연속 완독",
+        catHeaderTitle: "카테고리별 지혜 선택",
+        catHeaderHint: "원하는 카테고리를 터치하면 즉시 열립니다 ▾",
+        catAll: "전체 보기",
+        catClassic: "고전 도서",
+        catQuote: "인생 명언",
+        catProverb: "동서양 속담",
+        catBible: "성경 지혜",
+        catEastern: "동양 철학",
+        todayTag: "오늘의 지혜",
+        pastTag: "일 전 보관",
+        todayReturn: "🌟 오늘로 돌아가기",
+        playerTitle: "3분 오디오 대독 플레이어",
+        badge3min: "약 3분 낭독",
+        playerReady: "재생 버튼(▶)을 누르면 음성 낭독이 시작됩니다.",
+        playerPlaying: "🎙️ 차분하게 낭독 중입니다...",
+        playerEnded: "✨ 3분 낭독 완료! 아래 완독 버튼을 눌러 보관하세요.",
+        playerError: "음성 재생 중 문제가 발생했습니다.",
+        scriptViewerTitle: "3분 대독 낭독문 전문 (듣기 & 따라 읽기)",
+        scrapThisBtn: "명문장 스크랩",
+        missionTodayTitle: "오늘의 3분 지혜 리추얼",
+        missionTodayDesc: "3분 오디오를 모두 들으셨다면 완료를 눌러 해당 날짜의 완독을 보관하세요.",
+        missionPastTitle: "지난 지혜 보충 완독",
+        completeBtnToday: "✓ 오늘 3분 완독 완료 (+1일)",
+        completeBtnPast: "✓ 보충 완독 완료",
+        completeBtnDone: "✓ 완독 보관됨",
+        publicTag: "공개 저작물 (Public Domain)",
+        modalDateTitle: "📅 지난 날짜 & 오늘 날짜 지혜 보관함",
+        modalDateDesc: "지난 날짜의 지혜를 선택하면 그날의 엄선 고전과 3분 낭독을 다시 듣고 보관할 수 있습니다.",
+        directDateLabel: "특정 날짜 바로가기:",
+        modalScrapTitle: "⭐ 나의 스크랩 문장 보관함",
+        emptyScrap: "아직 보관된 문장이 없습니다. 마음에 드는 지혜 문장을 스크랩해보세요!",
+        ttsLang: "ko-KR"
+      },
+      EN: {
+        logoText: "Daily Book",
+        logoBadge: "3-Min Audio Wisdom",
+        dateArchiveBtn: "Date Archive",
+        scrapBtn: "Bookmarks",
+        streakUnit: "Days Streak",
+        catHeaderTitle: "Select Wisdom by Category",
+        catHeaderHint: "Tap any category to open instantly ▾",
+        catAll: "All Topics",
+        catClassic: "Classics",
+        catQuote: "Quotes",
+        catProverb: "Proverbs",
+        catBible: "Bible Wisdom",
+        catEastern: "Eastern Philosophy",
+        todayTag: "Today's Wisdom",
+        pastTag: "days ago",
+        todayReturn: "🌟 Back to Today",
+        playerTitle: "3-Minute Voice Read-Aloud Player",
+        badge3min: "~3 Min Audio",
+        playerReady: "Press Play (▶) to start voice narration.",
+        playerPlaying: "🎙️ Reading aloud calmly in English...",
+        playerEnded: "✨ Narration complete! Tap complete to archive.",
+        playerError: "Error playing audio.",
+        scriptViewerTitle: "Full 3-Minute Narration Script (Listen & Read)",
+        scrapThisBtn: "Save Quote",
+        missionTodayTitle: "Today's 3-Minute Wisdom Ritual",
+        missionTodayDesc: "Once you have listened to the audio, mark as complete to archive.",
+        missionPastTitle: "Past Reading Catch-Up",
+        completeBtnToday: "✓ Complete Today's Reading (+1d)",
+        completeBtnPast: "✓ Complete Past Reading",
+        completeBtnDone: "✓ Completed & Archived",
+        publicTag: "Public Domain",
+        modalDateTitle: "📅 Date Archive (Past & Today)",
+        modalDateDesc: "Select any past date to listen and archive that day's wisdom.",
+        directDateLabel: "Go to Date:",
+        modalScrapTitle: "⭐ My Saved Quotes",
+        emptyScrap: "No bookmarks yet. Save inspiring quotes!",
+        ttsLang: "en-US"
+      },
+      ZH: {
+        logoText: "每日一书",
+        logoBadge: "3分钟语音智慧",
+        dateArchiveBtn: "日期档案",
+        scrapBtn: "收藏夹",
+        streakUnit: "天连续完读",
+        catHeaderTitle: "按类别选择智慧",
+        catHeaderHint: "点击分类即可立即展开 ▾",
+        catAll: "全部智慧",
+        catClassic: "经典名著",
+        catQuote: "人生名言",
+        catProverb: "东西方谚语",
+        catBible: "圣经智慧",
+        catEastern: "东方哲学",
+        todayTag: "今日智慧",
+        pastTag: "天前归档",
+        todayReturn: "🌟 返回今日",
+        playerTitle: "3分钟语音朗读播放器",
+        badge3min: "约3分钟朗读",
+        playerReady: "点击播放按钮(▶)开始语音朗读。",
+        playerPlaying: "🎙️ 正在以沉稳的声音为您朗读...",
+        playerEnded: "✨ 朗读完成！点击下方按钮保存打卡记录。",
+        playerError: "音频播放出错。",
+        scriptViewerTitle: "3分钟朗读全文（边听边读）",
+        scrapThisBtn: "收藏名句",
+        missionTodayTitle: "今日3分钟智慧日常",
+        missionTodayDesc: "听完全文后，点击完成即可将阅读记录归档。",
+        missionPastTitle: "补读往日智慧",
+        completeBtnToday: "✓ 完成今日朗读 (+1天)",
+        completeBtnPast: "✓ 完成补读",
+        completeBtnDone: "✓ 已完读归档",
+        publicTag: "公有领域 (无版权争议)",
+        modalDateTitle: "📅 日期智慧归档库（往日与今日）",
+        modalDateDesc: "选择往日日期，即可重新聆听并保存那一天的智慧经典。",
+        directDateLabel: "选择日期跳转:",
+        modalScrapTitle: "⭐ 我的金句收藏夹",
+        emptyScrap: "暂无收藏的名句。遇到触动心灵的话语请点击收藏！",
+        ttsLang: "zh-CN"
+      },
+      MN: {
+        logoText: "Өдөр бүр нэг ном",
+        logoBadge: "3 минутын дуут мэргэн ухаан",
+        dateArchiveBtn: "Огнооны архив",
+        scrapBtn: "Хадгалсан",
+        streakUnit: "өдөр дараалан уншсан",
+        catHeaderTitle: "Мэргэн ухааныг ангиллаар сонгох",
+        catHeaderHint: "Ангилал дээр дарж шууд нээнэ үү ▾",
+        catAll: "Бүгдийг харах",
+        catClassic: "Сонгодог зохиол",
+        catQuote: "Амьдралын сургаал",
+        catProverb: "Зүйр цэцэн үг",
+        catBible: "Библийн мэргэн ухаан",
+        catEastern: "Дорнын гүн ухаан",
+        todayTag: "Өнөөдрийн мэргэн ухаан",
+        pastTag: "өдрийн өмнөх архив",
+        todayReturn: "🌟 Өнөөдөр рүү буцах",
+        playerTitle: "3 минутын дуут уншигч тоглуулагч",
+        badge3min: "~3 минут",
+        playerReady: "Тоглуулах (▶) дээр дарж дуут уншлагыг эхлүүлнэ үү.",
+        playerPlaying: "🎙️ Дуут уншлага тайван уншиж байна...",
+        playerEnded: "✨ Уншлага дууслаа! Доорх товчийг дарж хадгална уу.",
+        playerError: "Дуу тоглуулахад алдаа гарлаа.",
+        scriptViewerTitle: "3 минутын бүтэн эх бичвэр (Сонсож, дагаж унших)",
+        scrapThisBtn: "Эшлэл хадгалах",
+        missionTodayTitle: "Өнөөдрийн 3 минутын мэргэн ухааны дадал",
+        missionTodayDesc: "Дууг сонсож дууссаны дараа дууссан гэж тэмдэглэн хадгална уу.",
+        missionPastTitle: "Өнгөрсөн өдрийн уншлагыг нөхөж унших",
+        completeBtnToday: "✓ Өнөөдрийн уншлага дууссан (+1 өдөр)",
+        completeBtnPast: "✓ Нөхөж уншиж дууссан",
+        completeBtnDone: "✓ Уншиж хадгалагдсан",
+        publicTag: "Нээлттэй өв (Зохиогчийн эрх чөлөөтэй)",
+        modalDateTitle: "📅 Өнгөрсөн ба Өнөөдрийн огнооны архив",
+        modalDateDesc: "Өнгөрсөн огноог сонгон тухайн өдрийн 3 минутын уншлагыг дахин сонсож хадгална уу.",
+        directDateLabel: "Огноо руу үсрэх:",
+        modalScrapTitle: "⭐ Миний хадгалсан алтан сургаалууд",
+        emptyScrap: "Одоогоор хадгалсан эшлэл алга байна. Таалагдсан сургаалыг хадгална уу!",
+        ttsLang: "mn-MN"
+      },
+      JA: {
+        logoText: "一日一書",
+        logoBadge: "3分音声の知恵",
+        dateArchiveBtn: "日付アーカイブ",
+        scrapBtn: "保存リスト",
+        streakUnit: "日連続読了",
+        catHeaderTitle: "カテゴリ別知恵の選択",
+        catHeaderHint: "タップすると即座に開きます ▾",
+        catAll: "すべて",
+        catClassic: "古典名著",
+        catQuote: "人生の名言",
+        catProverb: "東西のことわざ",
+        catBible: "聖書の知恵",
+        catEastern: "東洋哲学",
+        todayTag: "今日の知恵",
+        pastTag: "日前の記録",
+        todayReturn: "🌟 今日に戻る",
+        playerTitle: "3分音声朗読プレイヤー",
+        badge3min: "約3分朗読",
+        playerReady: "再生ボタン(▶)を押すと朗読が始まります。",
+        playerPlaying: "🎙️ 落ち着いた声で朗読しています...",
+        playerEnded: "✨ 朗読完了！下のボタンを押して記録しましょう。",
+        playerError: "音声再生エラーが発生しました。",
+        scriptViewerTitle: "3分朗読全文テキスト（聴きながら読む）",
+        scrapThisBtn: "名言を保存",
+        missionTodayTitle: "今日の3分知恵リチュアル",
+        missionTodayDesc: "音声を聴き終えたら完了を押して記録を保存してください。",
+        missionPastTitle: "過去の知恵を補充読了",
+        completeBtnToday: "✓ 今日の読了を完了 (+1日)",
+        completeBtnPast: "✓ 過去の読了を完了",
+        completeBtnDone: "✓ 読了保存済み",
+        publicTag: "パブリックドメイン (著作権フリー)",
+        modalDateTitle: "📅 日付別知恵アーカイブ（過去と今日）",
+        modalDateDesc: "過去の日付を選択してその日の知恵と3分朗読を振り返ることができます。",
+        directDateLabel: "日付指定移動:",
+        modalScrapTitle: "⭐ 保存した名言リスト",
+        emptyScrap: "まだ保存された文がありません。心に響く言葉を保存しましょう！",
+        ttsLang: "ja-JP"
+      }
+    };
+
+    // Multilingual Content Database
+    const contentDatabase = [
+      {
+        id: "classic_meditations",
+        categoryType: "CLASSIC",
+        color: "linear-gradient(135deg, #1A365D 0%, #2B6CB0 100%)",
+        i18n: {
+          KO: {
+            title: "명상록 (Meditations)",
+            author: "마르쿠스 아우렐리우스 (로마 황제·스토아 철학자)",
+            coverTitle: "명상록",
+            coverAuthor: "아우렐리우스",
+            catDisplay: "📖 고전 도서 • 철학",
+            quote: "아침에 일어날 때 생각하라. 오늘 내가 만날 사람들은 무례하고 이기적일 수 있다. 그러나 그 누구도 나를 해칠 수 없다. 내 마음은 오직 나만이 지배하기 때문이다.",
+            fullScript: `안녕하세요, 하루한책 3분 오디오 클럽입니다. 복잡한 생각과 타인의 말들로 지친 마음에 작은 쉼표를 전합니다.
+
+오늘 함께 나눌 책은 약 2천 년 전, 로마 제국의 황제이자 스토아 철학자였던 마르쿠스 아우렐리우스의 《명상록》입니다.
+
+아우렐리우스는 전쟁터의 삭막한 막사 안에서, 밤마다 홀로 등불을 켜고 자신을 다스리기 위해 일기를 썼습니다. 그가 남긴 유명한 문장을 함께 들어보겠습니다.
+
+"아침에 일어날 때 스스로에게 말하라. 오늘 내가 만날 사람들은 무례하고, 배은망덕하며, 시기심이 많고 이기적일 것이다. 그러나 나는 결코 그들 때문에 상처받거나 분노하지 않을 것이다. 왜냐하면 나는 그들과 본질적으로 같은 인간이며, 내 마음의 평온은 오직 나 자신만이 다스릴 수 있기 때문이다."
+
+황제라는 최고의 권력을 가졌던 그 역시, 매일 마주치는 까다로운 사람들과 통제할 수 없는 수많은 문제들로 깊이 괴로워했습니다. 하지만 그는 중요한 진실 하나를 발견했습니다.
+
+세상의 소음과 타인의 행동은 결코 우리가 통제할 수 없습니다. 우리가 바꿀 수 있는 것은 오직 '그 사건을 바라보는 나의 마음과 태도'뿐이라는 사실입니다.
+
+누군가의 날카로운 말 한마디에 하루 종일 기분을 망쳐본 적이 있으신가요? 아우렐리우스는 우리에게 이렇게 조언합니다. 그 화살을 내 마음에 꽂고 괴로워할 것인지, 아니면 허공에 스쳐 지나가게 둘 것인지는 오직 나의 선택에 달려 있다고 말이죠.
+
+타인이 나를 어떻게 평가하든, 그것은 그들의 몫입니다. 내가 상처받지 않기로 결심하는 순간, 나를 괴롭히던 상처는 더 이상 힘을 쓰지 못합니다.
+
+오늘 하루, 당신이 어찌할 수 없는 일 때문에 소중한 에너지를 낭비하지 마세요. 지금 내가 바꿀 수 있는 작은 행동 하나, 지금 내 눈앞에 있는 순간에만 정성을 다해 보세요.
+
+오늘 나에게 묻습니다. "지금 나를 힘들게 하는 그 일, 과연 내가 바꿀 수 있는 일인가요?"
+
+마음의 평온을 되찾는 편안한 하루 되시기를 바랍니다. 지금까지 《명상록》이었습니다.`
+          },
+          EN: {
+            title: "Meditations",
+            author: "Marcus Aurelius (Roman Emperor & Stoic Philosopher)",
+            coverTitle: "Meditations",
+            coverAuthor: "Marcus Aurelius",
+            catDisplay: "📖 Classics • Philosophy",
+            quote: "When you wake up in the morning, tell yourself: The people I deal with today may be meddling, ungrateful, and arrogant. But none of them can hurt me, for my mind belongs only to me.",
+            fullScript: `Hello, and welcome to the Daily Book 3-minute wisdom club. In a noisy and hurried world, we bring a moment of clarity to your day.
+
+Today's work is Meditations, written nearly two thousand years ago by the Roman emperor and Stoic philosopher, Marcus Aurelius.
+
+Surrounded by the hardships of war, Aurelius lit his lamp each night to write honest reminders to himself. Here is his timeless thought:
+
+"When you arise in the morning, tell yourself: I shall meet with people who are envious, arrogant, and deceitful. Yet none of them can injure me, nor can I become angry at them, for they are my fellow human beings, and my peace of mind is governed solely by my own choices."
+
+Even as emperor, he struggled with demanding individuals and chaotic events. But he discovered a profound reality: we cannot control the world or others' behaviors. The only domain we truly own is our reaction and attitude.
+
+Has someone's sharp remark ever ruined your entire day? Aurelius reminds us that whether an insult wounds your soul or harmlessly passes by is entirely your decision.
+
+Do not waste precious energy on circumstances beyond your control today. Focus wholeheartedly on the single noble choice right before you.
+
+Ask yourself today: "Is the matter troubling me truly within my control?" May you enjoy peace and fortitude. This was Meditations.`
+          },
+          ZH: {
+            title: "沉思录 (Meditations)",
+            author: "马可·奥勒留 (罗马皇帝·斯多葛哲学家)",
+            coverTitle: "沉思录",
+            coverAuthor: "奥勒留",
+            catDisplay: "📖 经典名著 • 哲学",
+            quote: "清晨醒来时告诉自己：今天我所遇到的人可能是傲慢的、自私的、忘恩负义的。但他们任何人都无法真正伤害我，因为唯有我自己主宰我的心灵。",
+            fullScript: `您好，欢迎收听每日一书3分钟智慧播报。在纷扰的世界中，愿为您带来片刻内心的宁静。
+
+今天与大家分享的是两千年前罗马帝国皇帝兼斯多葛派哲学家马可·奥勒留所著的《沉思录》。
+
+在战火纷飞的军营深处，奥勒留每晚点亮孤灯，写下自省箴言：
+
+“清晨醒来时告诫自己：今天我将遇到狂妄无礼、忘恩负义之人。然而他们无法伤害我，我也无需因此动怒。因为他们与我同属人类，而我内心的平静纯粹取决于我自己的意志。”
+
+贵为一国之君，他也常为棘手的人际关系和不可控的意外所困扰。但他领悟了一个至关重要的真理：外界的风暴与他人的态度非我们所能掌控；我们唯一能主宰的，唯有我们自己对待事情的反应与心境。
+
+他人如何评说，那是他人的事。当你决定不再为恶语所动，那些所谓的伤害便立时烟消云散。
+
+今天，请不要将珍贵的精力浪费在无法左右的琐事上。专注做好眼前当下的微小之事。问问自己：“眼下困扰我的事，真是我所能改变的吗？” 愿您拥有充实平静的一天。`
+          },
+          MN: {
+            title: "Бясалгал (Meditations)",
+            author: "Марк Аврелий (Ромын эзэн хаан, Стоик гүн ухаантан)",
+            coverTitle: "Бясалгал",
+            coverAuthor: "Марк Аврелий",
+            catDisplay: "📖 Сонгодог зохиол • Гүн ухаан",
+            quote: "Өглөө сэрэхдээ өөртөө хэл: Өнөөдөр надтай уулзах хүмүүс өөдгүй, талархалгүй, их зантай байж магадгүй. Гэвч тэдний хэн нь ч намайг гомдоож чадахгүй. Учир нь миний сэтгэлийг зөвхөн би өөрөө л захирна.",
+            fullScript: `Сайн байна уу, Өдөр бүр нэг ном 3 минутын дуут клубт тавтай морилно уу. Бужигнаантай ертөнцөд сэтгэлд тань амар амгаланг бэлэглэж байна.
+
+Өнөөдөр бид хоёр мянган жилийн тэртээх Ромын эзэн хаан Марк Аврелийн 'Бясалгал' бүтээлийг хуваалцаж байна.
+
+Аврелий дайны хүнд хэцүү цагт шөнө бүр дэнлүү асаан өөртөө үнэнийг сануулан бичдэг байв:
+
+"Өглөө сэрэхдээ өөртөө сануул: Би өнөөдөр атаархуу, их зантай, хуурамч хүмүүстэй уулзаж магадгүй. Гэвч тэдний хэн нь ч намайг шархлуулж чадахгүй, би тэдэнд уурлахгүй. Учир нь тэд надтай адил хүмүүс бөгөөд миний дотоод амар амгалан зөвхөн миний сонголтоос хамаарна."
+
+Хэдийгээр хаан байсан ч тэрээр бусдын харилцаа, гэнэтийн зовлонд шаналдаг байв. Гэвч тэрээр аугаа үнэнийг ойлгосон: бид гадаад ертөнц болон бусдын үйлдлийг удирдаж чадахгүй. Бидний удирдаж чадах цорын ганц зүйл бол өөрийн хариу үйлдэл, сэтгэл билээ.
+
+Хэн нэгний хатуу үг өдрийг тань баллаж байсан уу? Гомдол таны сэтгэлийг шаналгах уу, эсвэл зүгээр л салхи мэт өнгөрөх үү гэдэг нь цэвэр таны шийдвэр юм.
+
+Өнөөдөр өөрийн хянаж чадахгүй зүйлд үнэт цагаа бүү үр. Өөртөө асуу: "Миний сэтгэлийг зовоож байгаа зүйл үнэхээр миний хянаж чадах зүйл мөн үү?" Амар амгаланг хүсье.`
+          },
+          JA: {
+            title: "自省録 (Meditations)",
+            author: "マルクス・アウレリウス (ローマ皇帝・哲学者)",
+            coverTitle: "自省録",
+            coverAuthor: "アウレリウス",
+            catDisplay: "📖 古典名著 • 哲学",
+            quote: "朝起きたとき、自分に言い聞かせよ。今日出会う人々は無礼で利己的かもしれない。しかし誰も私を傷つけることはできない。私の心は私だけが支配しているからだ。",
+            fullScript: `こんにちは、一日一書 3分音声クラブです。忙しい日々に追われるあなたの心に、静かな思索のひとときをお届けします。
+
+今日お届けする作品は、約2千年前のローマ皇帝でありストア派哲学者であったマルクス・アウレリウスの『自省録』です。
+
+アウレリウスは過酷な戦場の中で、毎夜ランプを灯し、自分自身を正すために日記を書き綴りました。
+
+「朝目覚めたとき、心に告げよ。今日出会う人々は身勝手で恩知らずかもしれない。だが彼らの言動によって私が傷つくことは決してない。なぜなら彼らもまた同胞であり、私の心の平穏は私自身のみがコントロールできるからである」
+
+他人の行動や世の中の騒音は変えられません。変えられるのは「それを受け止める自分の心と態度」だけです。今日、自分ではどうにもできないことに大切なエネルギーを浪費しないでください。今日一日の心の平穏を祈ります。`
+          }
+        }
+      },
+      {
+        id: "bible_proverbs",
+        categoryType: "BIBLE",
+        color: "linear-gradient(135deg, #44337A 0%, #6B46C1 100%)",
+        i18n: {
+          KO: {
+            title: "마음을 다스리는 자 (잠언 16:32)",
+            author: "솔로몬의 잠언 (구약성서 지혜문학)",
+            coverTitle: "마음 다스림",
+            coverAuthor: "잠언 16장",
+            catDisplay: "🕊️ 성경 지혜 • 감정 조절",
+            quote: "노하기를 더디 하는 자는 용사보다 낫고, 자기의 마음을 다스리는 자는 성을 빼앗는 자보다 나으니라.",
+            fullScript: `안녕하세요, 하루한책 3분 오디오 클럽입니다. 종교를 초월하여 수천 년간 인류의 영혼을 울려온 성경의 지혜, 《잠언》의 말씀을 함께 나눕니다.
+
+고대 이스라엘의 현자 솔로몬은 잠언 16장 32절에서 인간의 마음에 대해 깊은 통찰을 남겼습니다.
+
+"노하기를 더디 하는 자는 강력한 용사보다 낫고, 자기의 마음을 다스릴 줄 아는 자는 하나의 거대한 성을 무너뜨리는 장수보다 나으니라."
+
+우리는 흔히 남을 굴복시키고 거대한 성취를 이루는 사람을 강한 사람이라고 여깁니다. 그러나 성경의 지혜는 정반대를 이야기합니다.
+
+진짜 가장 강한 영웅은 남을 이기는 자가 아니라, 내 안에서 불길처럼 치솟는 분노와 조급함을 스스로 다스릴 수 있는 사람입니다.
+
+순간적인 격분을 참지 못해 쌓아온 관계를 무너뜨리고 잘못된 결정을 내리는 일이 얼마나 많습니까? 성을 점령하는 외적인 정복보다, 격랑이 이는 내 안의 마음을 고요하게 정돈하는 내적인 정복이 훨씬 더 위대하고 어렵습니다.
+
+누군가 당신의 감정을 자극할 때, 곧바로 반응하지 마세요. 깊은 호흡 한 번과 함께 반응을 잠시 늦추는 것만으로도, 당신은 이미 천 명의 군대를 이끄는 용사보다 더 단단한 승리자입니다.
+
+오늘 나에게 묻습니다. "오늘 나를 조급하게 하거나 화나게 만드는 순간, 나는 나의 마음을 지키는 진정한 용사가 될 준비가 되었나요?" 평안한 하루 되시기 바랍니다.`
+          },
+          EN: {
+            title: "Ruling One's Spirit (Proverbs 16:32)",
+            author: "Proverbs of Solomon",
+            coverTitle: "Inner Peace",
+            coverAuthor: "Proverbs 16",
+            catDisplay: "🕊️ Bible Wisdom • Self-Control",
+            quote: "Better a patient person than a warrior, one with self-control than one who takes a city.",
+            fullScript: `Hello, and welcome to the Daily Book 3-minute wisdom club.
+
+In Proverbs 16:32, King Solomon observed: "Better a patient person than a mighty warrior, one with self-control than one who conquers a city."
+
+In our competitive society, we often measure strength by conquest and outward dominance. Yet ancient wisdom reveals an entirely opposite standard of true power:
+
+The greatest conqueror is not the warrior who subdues an external citadel, but the individual who masters their own rising anger and impatience within.
+
+Conquering oneself is infinitely harder—and vastly more noble—than winning any argument. When provoked today, pause and breathe deeply. By delaying your reaction, you conquer what thousands of armies cannot. May peace guide you.`
+          },
+          ZH: {
+            title: "治服己心的人 (箴言 16:32)",
+            author: "所罗门箴言 (圣经智慧文学)",
+            coverTitle: "治服己心",
+            coverAuthor: "箴言16章",
+            catDisplay: "🕊️ 圣经智慧 • 情绪节制",
+            quote: "不轻易发怒的，胜过勇士；治服己心的，强如取城。",
+            fullScript: `您好，欢迎收听每日一书3分钟智慧播报。
+
+所罗门在《箴言》16章32节中留下了关于情绪节制的精辟洞见：
+
+“不轻易发怒的，胜过勇士；治服己心的，强如取城。”
+
+最卓越的勇者，不是能攻下千军万马城池的将领，而是能够战胜自己心中冲动与怒火的人。
+
+多少人因一时的冲动与口舌之快毁掉了信任。攻克内心的波澜，远比战胜外在的敌人更为艰难而崇高。今天，当感到情绪被挑动时，先深吸一口气，做自己生命中最坚毅的征服者。`
+          },
+          MN: {
+            title: "Сэтгэлээ захирагч (Сургаалт үгс 16:32)",
+            author: "Соломоны сургаалт үгс (Библийн мэргэн ухаан)",
+            coverTitle: "Сэтгэлээ захирах",
+            coverAuthor: "Сургаалт үгс 16",
+            catDisplay: "🕊️ Библийн мэргэн ухаан • Тэвчээр",
+            quote: "Уурлахдаа удаан хүн хүчирхэг баатраас дээр, өөрийн сэтгэлийг захирдаг хүн хот хэрмийг эзлэгчээс илүү.",
+            fullScript: `Сайн байна уу, Өдөр бүр нэг ном 3 минутын дуут клубт тавтай морилно уу.
+
+Эртний мэргэн Соломон хаан Сургаалт үгс 16:32-т сэтгэл хөдлөлөө захирах тухай ийн айлджээ:
+
+"Уурлахдаа удаан хүн хүчирхэг баатраас дээр, өөрийн сэтгэлийг захирдаг хүн хот хэрмийг эзлэн авагчаас илүү."
+
+Өрсөлдөөнт нийгэмд бид гадаад ололт амжилт, бусдыг дийлсэн хүнийг хүчтэй гэж үздэг. Гэвч үнэн хүч чадал бол дотроо дүрэлзэх уур хилэн, тэвчээргүй занг дарж чадах сэтгэлийн тэнхээ юм.
+
+Хоромхон зуурын уурыг тэвчиж чадаагүйгээс нандигнаж ирсэн харилцаагаа сүйтгэх тохиолдол хэчнээн их билээ? Гадаад цайзыг эзлэхээс илүү дотоод сэтгэлээ тайван удирдах нь илүү эрхэм ялалт юм.
+
+Өнөөдөр таныг бухимдуулах мөчид гүнзгий амьсгаа авч, хариу үйлдлээ 3 секунд азнаарай. Та бол жинхэнэ хүчирхэг ялагч билээ.`
+          },
+          JA: {
+            title: "心を治める者 (箴言 16:32)",
+            author: "ソロモンの箴言 (聖書の知恵)",
+            coverTitle: "心を治める",
+            coverAuthor: "箴言 16章",
+            catDisplay: "🕊️ 聖書の知恵 • 自制心",
+            quote: "怒りを遅くする者は勇士にまさり、自分の心を治める者は城を攻め取る者にまさる。",
+            fullScript: `こんにちは、一日一書 3分音声クラブです。
+
+ソロモン王は箴言第16章32節で、感情の自制について記しました。「怒りを遅くする者は強き勇士に勝り、自らの心を治める者は城を奪い取る将軍に勝る」
+
+真の強さとは、他者を屈服させることではなく、自分の内面に湧き上がる怒りや焦りを静める力にあります。外の世界の城を落とすことよりも、荒れ狂う自分の感情を穏やかに統御することこそが最も尊い勝利です。心穏やかな一日をお過ごしください。`
+          }
+        }
+      },
+      {
+        id: "quote_seneca",
+        categoryType: "QUOTE",
+        color: "linear-gradient(135deg, #7B341E 0%, #C05621 100%)",
+        i18n: {
+          KO: {
+            title: "인생의 짧음에 관하여",
+            author: "루키우스 세네카 (로마 철학자)",
+            coverTitle: "시간의 지혜",
+            coverAuthor: "세네카",
+            catDisplay: "💡 인생 명언 • 시간 성찰",
+            quote: "우리가 가진 시간이 짧은 것이 아니라, 우리가 너무나 많은 시간을 낭비하고 있을 뿐이다.",
+            fullScript: `안녕하세요, 하루한책 3분 오디오 클럽입니다. 오늘도 눈코 뜰 새 없이 하루가 지나가 버렸다고 느끼셨나요?
+
+세네카의 《인생의 짧음에 관하여》에 나오는 한마디입니다. "인간은 인생이 너무 짧다고 한탄한다. 그러나 사실은 우리가 가진 시간이 짧은 것이 아니라, 우리가 너무나 많은 시간을 낭비하고 있을 뿐이다."
+
+돈은 잃어버려도 다시 벌 수 있지만, 한 번 흘러간 시간은 전 세계의 모든 황금을 주어도 결코 되돌릴 수 없습니다. '나중에'라며 미루지 말고 오늘 이 순간에 온전히 살아있으세요. 시간의 주인이 되는 하루가 되시길 바랍니다.`
+          },
+          EN: {
+            title: "On the Shortness of Life",
+            author: "Lucius Seneca (Stoic Philosopher)",
+            coverTitle: "Value of Time",
+            coverAuthor: "Seneca",
+            catDisplay: "💡 Quotes • Life & Time",
+            quote: "It is not that we have a short time to live, but that we waste a great deal of it.",
+            fullScript: `Hello, and welcome to the Daily Book 3-minute wisdom club.
+
+Seneca wrote: "It is not that we have a short space of time, but that we waste much of it. Life is long enough if it were all well invested."
+
+Money lost can be regained, but an hour spent is gone forever. Stop postponing your existence for 'someday.' Own your minutes today.`
+          },
+          ZH: {
+            title: "论生命之短暂",
+            author: "塞涅卡 (古罗马哲学家)",
+            coverTitle: "时间的智慧",
+            coverAuthor: "塞涅卡",
+            catDisplay: "💡 人生名言 • 时间感悟",
+            quote: "并非我们拥有的时间太少，而是我们虚掷得太多。",
+            fullScript: `您好，欢迎收听每日一书3分钟智慧播报。
+
+塞涅卡指出：“我们并非生命短暂，而是虚掷光阴。” 金钱散去尚可复得，流逝的岁月纵有万贯家财亦难追回。做自己时间的主人。`
+          },
+          MN: {
+            title: "Амьдралын богинын тухай",
+            author: "Луций Сенека (Ромын гүн ухаантан)",
+            coverTitle: "Цаг хугацаа",
+            coverAuthor: "Сенека",
+            catDisplay: "💡 Сургаал • Цаг хугацааны үнэ цэн",
+            quote: "Бидний амьдрах хугацаа богинодоо биш, харин бид түүнийг хэтэрхий их үр ашиггүй гарзарддагт л учир бий.",
+            fullScript: `Сайн байна уу, Өдөр бүр нэг ном 3 минутын дуут клубт тавтай морилно уу.
+
+Сенека өөрийн бүтээлдээ: "Хүмүүс амьдрал хэтэрхий богинохон гэж гомдоллодог. Гэвч үнэндээ бидэнд өгөгдсөн цаг хугацаа хангалттай урт, бид л түүнийг хий хоосон гарзарддаг" хэмээжээ.
+
+Алдагдсан мөнгийг эргүүлэн олж болох ч, өнгөрсөн ганц хормыг дэлхийн бүх алтаар ч буцааж авч чадахгүй. Өнөөдөр өөрийн цаг хугацааны жинхэнэ эзэн нь байгаарай.`
+          },
+          JA: {
+            title: "人生の短さについて",
+            author: "ルキウス・セネカ",
+            coverTitle: "時間の知恵",
+            coverAuthor: "セネカ",
+            catDisplay: "💡 人生の名言 • 時間の価値",
+            quote: "私たちが持っている時間が短いのではない。私たちがその多くを浪費しているにすぎないのだ。",
+            fullScript: `こんにちは、一日一書 3分音声クラブです。
+
+セネカは記しました。「時間が短いのではなく、私たちが余りにも多くの時間を無駄にしているのだ」 お金は取り戻せても、過ぎ去った時間は決して戻りません。今日この瞬間、時間の主人になりましょう。`
+          }
+        }
+      },
+      {
+        id: "eastern_daodejing",
+        categoryType: "EASTERN",
+        color: "linear-gradient(135deg, #744210 0%, #B7791F 100%)",
+        i18n: {
+          KO: {
+            title: "도덕경: 물처럼 사는 지혜",
+            author: "노자 (Laozi)",
+            coverTitle: "상선약수",
+            coverAuthor: "노자",
+            catDisplay: "🍵 동양 철학 • 도가 사상",
+            quote: "가장 좋은 삶은 물과 같다(上善若水). 물은 만물을 이롭게 하면서도 결코 다투지 않고, 사람들이 싫어하는 가장 낮은 곳으로 흐른다.",
+            fullScript: `안녕하세요, 하루한책 3분 오디오 클럽입니다. 노자의 《도덕경》 제8장 '상선약수(上善若水)'입니다.
+
+"가장 훌륭한 덕은 물과 같다. 물은 만물에게 이로움을 주면서도 다투지 않고, 모든 사람이 싫어하는 가장 낮은 곳에 기꺼이 머문다."
+
+부드러움이 강함을 이깁니다. 유연함이 뻣뻣한 고집을 이깁니다. 다투지 않고 낮은 곳으로 흐르는 물처럼, 유연하게 순리에 몸을 맡겨보세요.`
+          },
+          EN: {
+            title: "Tao Te Ching: Water Wisdom",
+            author: "Laozi (Ancient Chinese Sage)",
+            coverTitle: "Like Water",
+            coverAuthor: "Laozi",
+            catDisplay: "🍵 Eastern Wisdom • Taoism",
+            quote: "The highest goodness is like water. Water benefits all things and does not compete with them. It stays in the lowest places which others disdain.",
+            fullScript: `Hello, and welcome to the Daily Book 3-minute wisdom club.
+
+Laozi teaches in the Tao Te Ching: "The highest excellence is like that of water. It benefits all things without striving." Soft and yielding, water flows around obstacles and wears through granite. Flow with gentleness today.`
+          },
+          ZH: {
+            title: "道德经：上善若水",
+            author: "老子 (道家宗师)",
+            coverTitle: "上善若水",
+            coverAuthor: "老子",
+            catDisplay: "🍵 东方哲学 • 道家思想",
+            quote: "上善若水。水善利万物而不争，处众人之所恶，故几于道。",
+            fullScript: `您好，欢迎收听每日一书3分钟智慧播报。
+
+《道德经》云：“上善若水。水善利万物而不争。” 柔能克刚，如水般不争而润物无声。`
+          },
+          MN: {
+            title: "Дао Дэ Цзин: Ус шиг амьдрах ухаан",
+            author: "Лао-цзы (Дорнын мэргэн)",
+            coverTitle: "Ус мэт",
+            coverAuthor: "Лао-цзы",
+            catDisplay: "🍵 Дорнын гүн ухаан • Дао",
+            quote: "Дээд сайн чанар бол устай адил. Ус бүх юманд тустай бөгөөд хэзээ ч тэмцдэггүй, хүн бүрийн дургүйцдэг доор газар урсан очдог.",
+            fullScript: `Сайн байна уу, Өдөр бүр нэг ном 3 минутын дуут клубт тавтай морилно уу.
+
+Лао-цзы айлджээ: "Дээд сайн чанар бол ус шиг байх явдал. Ус бүхнийг тэтгэдэг атлаа хэзээ ч өрсөлдөн булаацалддаггүй." Ус ямар ч саадыг зөөлнөөр тойрон урсаж, хамгийн хатуу хадыг ч элээдэг. Уян зөөлөн чанар хатууг ялна.`
+          },
+          JA: {
+            title: "道徳経：上善は水の如し",
+            author: "老子",
+            coverTitle: "上善若水",
+            coverAuthor: "老子",
+            catDisplay: "🍵 東洋哲学 • 老荘思想",
+            quote: "上善は水の若し。水は善く万物を利して争わず、衆人の悪む所に処る。",
+            fullScript: `老子の『道徳経』：「上善は水の如し」 水のようにしなやかに、争わず穏やかに生きる一日を。`
+          }
+        }
+      }
+    ];
+
+    // Preserve existing storage keys; unavailable or malformed storage must not block reading.
+    function readStored(key, fallback, valid) {
+      try {
+        const raw = localStorage.getItem(key);
+        const value = raw === null ? fallback : JSON.parse(raw);
+        return valid(value) ? value : fallback;
+      } catch { return fallback; }
+    }
+    function saveStored(key, value) {
+      try { localStorage.setItem(key, value); }
+      catch { console.warn("Daily Book: browser storage is unavailable; changes last for this session only."); }
+    }
+    function escapeText(value) {
+      const span = document.createElement("span");
+      span.textContent = String(value);
+      return span.innerHTML;
+    }
+
+    // State Management
+    let currentLang = "KO";
+    try {
+      const savedLang = localStorage.getItem("daily_book_lang");
+      if (Object.hasOwn(i18nDict, savedLang)) currentLang = savedLang;
+    } catch {}
+    const REAL_TODAY = new Date();
+    let currentSelectedDate = new Date();
+    let currentItem = contentDatabase[0];
+    let activeCategory = "ALL";
+    let hasRendered = false;
+    let isPlaying = false;
+    let speechSynth = window.speechSynthesis;
+    let currentUtterance = null;
+
+    let completionRecords = readStored("daily_book_completed_dates", {}, v => v !== null && typeof v === "object" && !Array.isArray(v));
+    let scraps = readStored("daily_book_scraps", [], v => Array.isArray(v) && v.every(s => s && [s.book, s.quote, s.date].every(t => typeof t === "string")));
+
+    function formatDateKey(d) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatDateDisplay(d, lang) {
+      if (lang === "EN") {
+        return d.toLocaleDateString("en-US", { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+      } else if (lang === "MN") {
+        return `${d.getFullYear()} оны ${d.getMonth() + 1}-р сарын ${d.getDate()}`;
+      } else if (lang === "ZH") {
+        return d.toLocaleDateString("zh-CN", { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+      } else if (lang === "JA") {
+        return d.toLocaleDateString("ja-JP", { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+      }
+      const days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+      return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 (${days[d.getDay()]})`;
+    }
+
+    function isSameDate(d1, d2) {
+      return d1.getFullYear() === d2.getFullYear() &&
+             d1.getMonth() === d2.getMonth() &&
+             d1.getDate() === d2.getDate();
+    }
+
+    function getContentForDate(dateObj) {
+      const dayIndex = Math.floor(dateObj.getTime() / (1000 * 60 * 60 * 24));
+      const idx = Math.abs(dayIndex) % contentDatabase.length;
+      return contentDatabase[idx];
+    }
+
+    function applyLanguage(lang) {
+      if (!Object.hasOwn(i18nDict, lang)) lang = "KO";
+      const selectedItem = hasRendered ? currentItem : null;
+      currentLang = lang;
+      document.documentElement.lang = {KO: "ko", EN: "en", ZH: "zh", MN: "mn", JA: "ja"}[lang];
+      saveStored("daily_book_lang", lang);
+      const dict = i18nDict[lang];
+
+      document.querySelectorAll(".lang-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+      });
+
+      document.getElementById("uiLogoText").textContent = dict.logoText;
+      document.getElementById("uiLogoBadge").textContent = dict.logoBadge;
+      document.getElementById("uiDateArchiveBtn").textContent = dict.dateArchiveBtn;
+      document.getElementById("uiScrapBtn").textContent = dict.scrapBtn;
+      document.getElementById("uiCatHeaderTitle").textContent = dict.catHeaderTitle;
+      document.getElementById("uiCatHeaderHint").textContent = dict.catHeaderHint;
+      document.getElementById("cat_all").textContent = dict.catAll;
+      document.getElementById("cat_classic").textContent = dict.catClassic;
+      document.getElementById("cat_quote").textContent = dict.catQuote;
+      document.getElementById("cat_proverb").textContent = dict.catProverb;
+      document.getElementById("cat_bible").textContent = dict.catBible;
+      document.getElementById("cat_eastern").textContent = dict.catEastern;
+      document.getElementById("uiPlayerTitle").textContent = dict.playerTitle;
+      document.getElementById("uiBadge3min").textContent = dict.badge3min;
+      document.getElementById("uiScriptViewerTitle").textContent = dict.scriptViewerTitle;
+      document.getElementById("uiScrapThisBtn").textContent = dict.scrapThisBtn;
+      document.getElementById("todayReturnBtn").textContent = dict.todayReturn;
+      document.getElementById("publicTag").textContent = dict.publicTag;
+      document.getElementById("uiModalDateArchiveTitle").textContent = dict.modalDateTitle;
+      document.getElementById("uiModalDateArchiveDesc").textContent = dict.modalDateDesc;
+      document.getElementById("uiDirectDateLabel").textContent = dict.directDateLabel;
+      document.getElementById("uiModalScrapTitle").textContent = dict.modalScrapTitle;
+
+      renderForDate(currentSelectedDate);
+      if (selectedItem) renderActiveContent(selectedItem);
+      hasRendered = true;
+      renderSubItems();
+      const activeChip = document.querySelector(".chip.active");
+      if (activeChip) document.getElementById("currentCategoryText").textContent = `(${activeChip.textContent.trim()})`;
+      updateHeaderStats();
+    }
+
+    function calculateStreak() {
+      let streak = 0;
+      let checkDate = new Date(REAL_TODAY);
+      while (true) {
+        const key = formatDateKey(checkDate);
+        if (completionRecords[key]) {
+          streak++;
+          checkDate.setDate(checkDate.getDate() - 1);
+        } else {
+          if (isSameDate(checkDate, REAL_TODAY)) {
+            checkDate.setDate(checkDate.getDate() - 1);
+            const yKey = formatDateKey(checkDate);
+            if (completionRecords[yKey]) {
+              streak++;
+              checkDate.setDate(checkDate.getDate() - 1);
+              continue;
+            }
+          }
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function updateHeaderStats() {
+      const dict = i18nDict[currentLang];
+      const streak = calculateStreak();
+      document.getElementById("streakBadge").textContent = `🔥 ${streak} ${dict.streakUnit}`;
+      document.getElementById("scrapCount").textContent = scraps.length;
+    }
+
+    function renderForDate(targetDate) {
+      currentSelectedDate = new Date(targetDate);
+      const isToday = isSameDate(currentSelectedDate, REAL_TODAY);
+      const dateKey = formatDateKey(currentSelectedDate);
+      const isCompleted = !!completionRecords[dateKey];
+      const dict = i18nDict[currentLang];
+
+      document.getElementById("currentDateStr").textContent = formatDateDisplay(currentSelectedDate, currentLang);
+      
+      const statusTag = document.getElementById("dateStatusTag");
+      const todayReturnBtn = document.getElementById("todayReturnBtn");
+      const nextBtn = document.getElementById("nextDayBtn");
+
+      if (isToday) {
+        statusTag.textContent = dict.todayTag;
+        statusTag.className = "date-status-tag today";
+        todayReturnBtn.style.display = "none";
+        nextBtn.disabled = true;
+      } else {
+        const diffDays = Math.round((REAL_TODAY - currentSelectedDate) / (1000 * 60 * 60 * 24));
+        statusTag.textContent = `${diffDays} ${dict.pastTag}`;
+        statusTag.className = "date-status-tag past";
+        todayReturnBtn.style.display = "inline-block";
+        nextBtn.disabled = false;
+      }
+
+      const matchedItem = getContentForDate(currentSelectedDate);
+      renderActiveContent(matchedItem);
+
+      const completeBtn = document.getElementById("completeBtn");
+      const completeTitle = document.getElementById("completeMissionTitle");
+      const completeDesc = document.getElementById("completeMissionDesc");
+
+      completeDesc.textContent = dict.missionTodayDesc;
+      if (isCompleted) {
+        completeBtn.textContent = `✓ ${dateKey} ${dict.completeBtnDone}`;
+        completeBtn.classList.add("done");
+        completeTitle.textContent = `🎉 ${dateKey} ${dict.completeBtnDone}`;
+      } else {
+        completeBtn.textContent = isToday ? dict.completeBtnToday : `✓ ${dateKey} ${dict.completeBtnPast}`;
+        completeBtn.classList.remove("done");
+        completeTitle.textContent = isToday ? dict.missionTodayTitle : `📅 ${dateKey} ${dict.missionPastTitle}`;
+      }
+    }
+
+    function renderActiveContent(item) {
+      currentItem = item;
+      const dict = i18nDict[currentLang];
+      const loc = item.i18n[currentLang] || item.i18n.KO;
+
+      document.getElementById("coverTitle").textContent = loc.coverTitle;
+      document.getElementById("coverAuthor").textContent = loc.coverAuthor;
+      document.getElementById("bookCover").style.background = item.color;
+      document.getElementById("bookCategory").textContent = loc.catDisplay;
+      document.getElementById("bookTitle").textContent = loc.title;
+      document.getElementById("bookAuthor").textContent = loc.author;
+      document.getElementById("bookQuote").textContent = `"${loc.quote}"`;
+      document.getElementById("playerBookTitle").textContent = `${loc.title} (${dict.badge3min})`;
+      document.getElementById("scriptBody").textContent = loc.fullScript;
+
+      stopSpeech();
+      updateSubItemsHighlight();
+    }
+
+    function renderSubItems() {
+      const panel = document.getElementById("categorySubItems");
+      panel.innerHTML = "";
+
+      const filtered = activeCategory === "ALL" 
+        ? contentDatabase 
+        : contentDatabase.filter(c => c.categoryType === activeCategory);
+
+      filtered.forEach(item => {
+        const loc = item.i18n[currentLang] || item.i18n.KO;
+        const btn = document.createElement("button");
+        btn.className = `cat-item-btn ${item.id === currentItem.id ? "selected" : ""}`;
+        btn.id = `sub_btn_${item.id}`;
+        btn.innerHTML = `<strong>${loc.coverTitle}</strong> <span style="font-size:0.75rem; color:#718096;">• ${loc.author.split(" ")[0]}</span>`;
+        btn.onclick = () => {
+          renderActiveContent(item);
+        };
+        panel.appendChild(btn);
+      });
+    }
+
+    function updateSubItemsHighlight() {
+      document.querySelectorAll(".cat-item-btn").forEach(btn => {
+        btn.classList.remove("selected");
+      });
+      const selectedBtn = document.getElementById(`sub_btn_${currentItem.id}`);
+      if (selectedBtn) {
+        selectedBtn.classList.add("selected");
+      }
+    }
+
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        activeCategory = chip.getAttribute("data-category");
+        
+        const catName = chip.textContent.trim();
+        document.getElementById("currentCategoryText").textContent = `(${catName})`;
+
+        const filtered = activeCategory === "ALL" 
+          ? contentDatabase 
+          : contentDatabase.filter(c => c.categoryType === activeCategory);
+
+        if (filtered.length > 0) {
+          renderActiveContent(filtered[0]);
+        }
+        renderSubItems();
+      });
+    });
+
+    // Date Navigation Buttons
+    document.getElementById("prevDayBtn").addEventListener("click", () => {
+      const target = new Date(currentSelectedDate);
+      target.setDate(target.getDate() - 1);
+      renderForDate(target);
+    });
+
+    document.getElementById("nextDayBtn").addEventListener("click", () => {
+      const target = new Date(currentSelectedDate);
+      target.setDate(target.getDate() + 1);
+      if (target <= REAL_TODAY) {
+        renderForDate(target);
+      }
+    });
+
+    document.getElementById("todayReturnBtn").addEventListener("click", () => {
+      renderForDate(REAL_TODAY);
+    });
+
+    document.getElementById("logoClick").addEventListener("click", () => {
+      renderForDate(REAL_TODAY);
+    });
+
+    // Date Archive Modal
+    function openDateArchiveModal() {
+      const dict = i18nDict[currentLang];
+      const listContainer = document.getElementById("dateArchiveList");
+      listContainer.innerHTML = "";
+
+      for (let i = 0; i < 14; i++) {
+        const d = new Date(REAL_TODAY);
+        d.setDate(d.getDate() - i);
+        const dateKey = formatDateKey(d);
+        const isDone = !!completionRecords[dateKey];
+        const isToday = (i === 0);
+        const item = getContentForDate(d);
+        const loc = item.i18n[currentLang] || item.i18n.KO;
+
+        const div = document.createElement("div");
+        div.className = `date-archive-item ${isSameDate(d, currentSelectedDate) ? "active" : ""}`;
+        div.innerHTML = `
+          <div class="archive-left">
+            <span class="archive-date-str">${formatDateDisplay(d, currentLang)} ${isToday ? "• 🌟 " + dict.todayTag : ""}</span>
+            <span class="archive-item-title">${loc.title}</span>
+            <span class="archive-item-cat">${loc.catDisplay}</span>
+          </div>
+          <div>
+            <span class="archive-status-badge ${isDone ? 'completed' : 'pending'}">
+              ${isDone ? dict.completeBtnDone : '---'}
+            </span>
+          </div>
+        `;
+        div.onclick = () => {
+          renderForDate(d);
+          document.getElementById("dateArchiveModal").style.display = "none";
+        };
+        listContainer.appendChild(div);
+      }
+
+      document.getElementById("directDateInput").value = formatDateKey(currentSelectedDate);
+      document.getElementById("directDateInput").max = formatDateKey(REAL_TODAY);
+      document.getElementById("dateArchiveModal").style.display = "flex";
+    }
+
+    document.getElementById("openDateArchiveBtn").addEventListener("click", openDateArchiveModal);
+    document.getElementById("datePickerTrigger").addEventListener("click", openDateArchiveModal);
+    document.getElementById("dateArchiveCloseBtn").addEventListener("click", () => {
+      document.getElementById("dateArchiveModal").style.display = "none";
+    });
+
+    document.getElementById("directDateInput").addEventListener("change", (e) => {
+      if (e.target.value) {
+        const parts = e.target.value.split("-");
+        const selected = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        if (selected <= REAL_TODAY) {
+          renderForDate(selected);
+          document.getElementById("dateArchiveModal").style.display = "none";
+        } else {
+          alert("Future dates are not available.");
+        }
+      }
+    });
+
+    // Language Selector Click
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const lang = btn.getAttribute("data-lang");
+        applyLanguage(lang);
+      });
+    });
+
+    // Speech Audio Controls (TTS in KO, EN, ZH, MN, JA)
+    function stopSpeech() {
+      if (speechSynth) {
+        if (currentUtterance) {
+          currentUtterance.onstart = null;
+          currentUtterance.onend = null;
+          currentUtterance.onerror = null;
+        }
+        speechSynth.cancel();
+      }
+      isPlaying = false;
+      document.getElementById("playBtn").textContent = "▶";
+      const dict = i18nDict[currentLang];
+      document.getElementById("playerStatus").textContent = dict.playerReady;
+    }
+
+    function playSpeech() {
+      if (!('speechSynthesis' in window)) {
+        alert("Speech synthesis is not supported on this browser.");
+        return;
+      }
+
+      if (isPlaying) {
+        stopSpeech();
+        return;
+      }
+
+      const dict = i18nDict[currentLang];
+      const loc = currentItem.i18n[currentLang] || currentItem.i18n.KO;
+      const rate = parseFloat(document.getElementById("speedSelect").value || "1.0");
+
+      currentUtterance = new SpeechSynthesisUtterance(loc.fullScript);
+      currentUtterance.lang = dict.ttsLang; // ko-KR, en-US, zh-CN, mn-MN, ja-JP
+      currentUtterance.rate = rate;
+
+      currentUtterance.onstart = () => {
+        isPlaying = true;
+        document.getElementById("playBtn").textContent = "⏸";
+        document.getElementById("playerStatus").textContent = dict.playerPlaying + ` (${rate}x)`;
+      };
+
+      currentUtterance.onend = () => {
+        isPlaying = false;
+        document.getElementById("playBtn").textContent = "▶";
+        document.getElementById("playerStatus").textContent = dict.playerEnded;
+      };
+
+      currentUtterance.onerror = () => {
+        isPlaying = false;
+        document.getElementById("playBtn").textContent = "▶";
+        document.getElementById("playerStatus").textContent = dict.playerError;
+      };
+
+      isPlaying = true;
+      document.getElementById("playBtn").textContent = "⏸";
+      try { speechSynth.speak(currentUtterance); }
+      catch { currentUtterance.onerror(); }
+    }
+
+    document.getElementById("playBtn").addEventListener("click", playSpeech);
+    document.getElementById("speedSelect").addEventListener("change", () => {
+      if (isPlaying) {
+        stopSpeech();
+        playSpeech();
+      }
+    });
+
+    // Complete Action
+    document.getElementById("completeBtn").addEventListener("click", () => {
+      const dict = i18nDict[currentLang];
+      const dateKey = formatDateKey(currentSelectedDate);
+      if (!completionRecords[dateKey]) {
+        completionRecords[dateKey] = true;
+        saveStored("daily_book_completed_dates", JSON.stringify(completionRecords));
+        alert(`🎉 ${dateKey} ${dict.completeBtnDone}!`);
+      } else {
+        alert(`Already saved for ${dateKey}.`);
+      }
+      renderForDate(currentSelectedDate);
+      updateHeaderStats();
+    });
+
+    // Font Toggle
+    let fontSizes = ["15px", "16.5px", "18px"];
+    let currentFontIdx = 1;
+    document.getElementById("fontToggleBtn").addEventListener("click", () => {
+      currentFontIdx = (currentFontIdx + 1) % fontSizes.length;
+      document.documentElement.style.setProperty("--font-base", fontSizes[currentFontIdx]);
+    });
+
+    // Scraps
+    document.getElementById("scrapThisQuoteBtn").addEventListener("click", () => {
+      const loc = currentItem.i18n[currentLang] || currentItem.i18n.KO;
+      const newScrap = {
+        book: loc.title,
+        quote: loc.quote,
+        date: formatDateKey(currentSelectedDate)
+      };
+      scraps.unshift(newScrap);
+      saveStored("daily_book_scraps", JSON.stringify(scraps));
+      updateHeaderStats();
+      alert("⭐ Bookmark saved!");
+    });
+
+    document.getElementById("scrapOpenBtn").addEventListener("click", () => {
+      const dict = i18nDict[currentLang];
+      const container = document.getElementById("scrappedItemsContainer");
+      if (scraps.length === 0) {
+        container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">${dict.emptyScrap}</p>`;
+      } else {
+        container.innerHTML = scraps.map((s, i) => `
+          <div class="scrapped-card">
+            <strong>${escapeText(s.book)}</strong> <span style="font-size:0.75rem; color:#888;">(${escapeText(s.date)})</span>
+            <p style="margin-top:4px;">"${escapeText(s.quote)}"</p>
+          </div>
+        `).join("");
+      }
+      document.getElementById("scrapModal").style.display = "flex";
+    });
+
+    document.getElementById("scrapCloseBtn").addEventListener("click", () => {
+      document.getElementById("scrapModal").style.display = "none";
+    });
+
+    window.onclick = function(event) {
+      if (event.target === document.getElementById("scrapModal")) {
+        document.getElementById("scrapModal").style.display = "none";
+      }
+      if (event.target === document.getElementById("dateArchiveModal")) {
+        document.getElementById("dateArchiveModal").style.display = "none";
+      }
+    };
+
+    // Initial Run with stored or default language
+    applyLanguage(currentLang);
+    renderSubItems();
+  </script>
+</body>
+</html>
